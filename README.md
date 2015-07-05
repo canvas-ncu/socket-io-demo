@@ -1,2 +1,2 @@
-# soket-io-demo
-soket-ioを使ったデモ
+# socket-io-demo
+socket-ioを使ったデモ
