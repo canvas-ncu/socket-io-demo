@@ -5,6 +5,8 @@ var start = function() {
     var stageHeight;
     function initialize() {
         var canvasElement = document.getElementById("my-canvas");
+        canvasElement.width = window.innerWidth - 300;
+        canvasElement.height = window.innerHeight;
         stageWidth = canvasElement.width;
         stageHeight = canvasElement.height;
         stage = new createjs.Stage(canvasElement);
