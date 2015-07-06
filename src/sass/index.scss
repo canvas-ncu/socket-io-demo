@@ -16,14 +16,13 @@ body{
 }
 
 #member {
-    float: left;
-    width: 300px;
-    height: 100%;
-    color: #FFF;
-    background-color: #3F4B5B;
-}
+  float: left;
+  width: 300px;
+  height: 100%;
+  color: #FFF;
+  background-color: #3F4B5B;
 
-#member h1{
+  h1{
     margin: 0;
     padding: 0 0 0 20px;
     font-size: 20px;
@@ -32,22 +31,25 @@ body{
     border-bottom-style: solid;
     border-bottom-width: 1px;
     border-bottom-color: #CCC;
-}
+  }
 
-#member_list {
+  #member_list {
     overflow: auto;
-}
+  }
 
-#member ul {
+  ul {
     padding: 0;
     display: block;
     list-style: none;
-}
 
-#member ul li{
-    height: 80px;
-    display: block;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
-    border-bottom-color: #999;
+    li{
+      height: 80px;
+      display: block;
+      border-bottom-style: solid;
+      border-bottom-width: 1px;
+      border-bottom-color: #999;
+    }
+
+  }
+
 }
