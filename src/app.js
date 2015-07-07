@@ -6,22 +6,27 @@ function initialize() {
     var stageWidth;
     var stageHeight;
 
+    // canvasタグを取得
     var canvasElement = document.getElementById("my-canvas");
     canvasElement.width = window.innerWidth - 300;
     canvasElement.height = window.innerHeight;
 
-
+    // ステージの準備
     stageWidth = canvasElement.width;
     stageHeight = canvasElement.height;
     stage = new createjs.Stage(canvasElement);
-    
+   
+    // アバター
     var avatar = new Avatar({
         x: stageWidth / 2,
         y: stageHeight / 2,
+        scaleX: 2,
+        scaleY: 2,
         image: './img/pokemonrgb_various_sheet.png'
     });
     stage.addChild(avatar);
-    
+   
+    // 1コマ毎にupdate
     createjs.Ticker.addEventListener("tick", () => {
         stage.update();
     });
@@ -43,7 +48,7 @@ function initialize() {
     };
 
     document.onkeyup = (e) => {
-        avatar.stop();
+        avatar.stopWalk();
     };
 }
 
