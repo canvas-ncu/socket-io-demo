@@ -5,11 +5,17 @@ html, body {
   height: 100%; }
 
 body {
-  background-color: #eeeeee; }
+  position: relative;
+  background-color: #000; }
 
 #my-canvas {
-  float: left;
-  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  display: block;
   background-color: #FFFFFF; }
 
 #member {
