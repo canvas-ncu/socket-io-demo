@@ -1,4 +1,6 @@
 import _ from 'underscore'
+import * as CFG from '../config.js';
+import * as Util from './utility.js';
 
 export default class Avatar extends createjs.Sprite{
     constructor(params) {
@@ -12,54 +14,87 @@ export default class Avatar extends createjs.Sprite{
         // 歩くスピード
         this.walkspeed = 500;
         // 次にどちらに行くか
-        this.nextAction = null;
+        this.nextAction = {
+            action: null,       // 次の動作
+            walkDisable: false  // 進めるかどうかのフラグ
+        };
+
+        // 歩くスピード
+        var walkSpeed = 0.3;
         // スプライトシート作成
-        this.spriteSheet = new createjs.SpriteSheet({
+        var spriteSheet = new createjs.SpriteSheet({
             framerate: 30,
             images: [params.image],
             frames: {
-                width: 16,
-                height: 16
+                width:  CFG.TILE_SIZE,
+                height: CFG.TILE_SIZE
             },
             animations: {
                 up: {
                     frames: [ 3, 4, 3, 5 ],
                     next: 'up',
-                    speed: 0.3
+                    speed: walkSpeed
                 },
                 left: {
                     frames: [ 6, 7 ],
                     next: 'left',
-                    speed: 0.3
+                    speed: walkSpeed
                 },
                 right: {
                     frames: [ 8, 9 ],
                     next: 'right',
-                    speed: 0.3
+                    speed: walkSpeed
                 },
                 down: {
                     frames: [ 0, 1, 0, 2 ],
                     next: 'down',
-                    speed: 0.3
+                    speed: walkSpeed
                 }
             }
         });
-        this.initialize(this.spriteSheet);
-        _.extend(this, params);
+        // createJSコンポーネントをイニシャライズ
+        this.initialize(spriteSheet);
+        // 初期立ち位置をセット
+        this.setCellX(params.cellX || 1);
+        this.setCellY(params.cellY || 1);
     }
-    walk(direction) {
+    // アバターの位置のセッター
+    setCellX(x) {
+        this.cellX = x;
+        this.x = Util.getX(x);
+    }
+    setCellY(y) {
+        this.cellY = y;
+        this.y = Util.getY(y);
+    }
+    // アバターの位置のゲッター
+    getCellX() {
+        return this.cellX;
+    }
+    getCellY() {
+        return this.cellY;
+    }
+    // 次のアクションをセット
+    walk(direction, walkDisable) {
         if(!direction) {
             console.error('require: direction');
         }
-        this.nextAction = direction;
+        // 次のアクションの予約
+        this.nextAction = {
+            action: direction,
+            walkDisable: walkDisable
+        };
+        // 現時点で歩いていなければ
+        // 歩き始める
         if(!this.isWalking) {
             this.isWalking = true;
             this.goNextAction();
         }
     }
+    // 予約されている動作を実行
     goNextAction() {
         // 次のアクションが入力されていなければ止める
-        if(!this.nextAction) {
+        if(!this.nextAction.action) {
             this.isWalking = false;
             this.walkingDirection = null;
             switch(this.direction) {
@@ -70,63 +105,52 @@ export default class Avatar extends createjs.Sprite{
             }
             return;
         }
-        // 次のアクションが入力されていれば歩かせる
-        switch(this.nextAction) {
-            case 'up'   : this.goUp();    break;
-            case 'left' : this.goLeft();  break;
-            case 'right': this.goRight(); break;
-            case 'down' : this.goDown();  break;
+
+        // 向いている方向を更新
+        this.direction = this.nextAction.action;
+        // 今歩いている方向と次の動作が違った場合は
+        // 新規にスプライトアニメーションを始める
+        if(this.walkingDirection !== this.direction) {
+            // 歩いている方向を更新
+            this.walkingDirection = this.direction;
+            // スプライトアニメーションを開始
+            this.gotoAndPlay(this.direction);
         }
-    }
-    goUp() {
-        this.direction = 'up';
-        if(this.walkingDirection !== 'up') {
-            this.walkingDirection = 'up';
-            this.gotoAndPlay('up');
-        }
+        // 次の立ち位置を計算
+        var getNextPos = (_dir) => {
+            var nowPos = [this.getCellX(), this.getCellY()];
+            switch(_dir) {
+                case 'up'   : return [nowPos[0],     nowPos[1] - 1];
+                case 'left' : return [nowPos[0] - 1, nowPos[1]    ];
+                case 'right': return [nowPos[0] + 1, nowPos[1]    ];
+                case 'down' : return [nowPos[0],     nowPos[1] + 1];
+            }
+        };
+        // 次の立ち位置座標を保持
+        var nextPos = getNextPos(this.direction);
+        // 移動アニメーションを開始
         createjs.Tween.get(this)
-            .to({y: this.y - 16}, this.walkspeed)
+            .to(
+                {
+                    x: Util.getX(nextPos[0]),
+                    y: Util.getY(nextPos[1]),
+                },
+                this.walkspeed
+            )
             .call(function() {
+                // 立ち位置座標の更新
+                this.cellX = nextPos[0];
+                this.cellY = nextPos[1];
+                // 終了したら再起的に次のアクションを実行
                 this.goNextAction();
             });
     }
-    goLeft() {
-        this.direction = 'left';
-        if(this.walkingDirection !== 'left') {
-            this.walkingDirection = 'left';
-            this.gotoAndPlay('left');
-        }
-        createjs.Tween.get(this)
-            .to({x: this.x - 16}, this.walkspeed)
-            .call(function() {
-                this.goNextAction();
-            });
-    }
-    goRight() {
-        this.direction = 'right';
-        if(this.walkingDirection !== 'right') {
-            this.walkingDirection = 'right';
-            this.gotoAndPlay('right');
-        }
-        createjs.Tween.get(this)
-            .to({x: this.x + 16}, this.walkspeed)
-            .call(function() {
-                this.goNextAction();
-            });
-    }
-    goDown() {
-        this.direction = 'down';
-        if(this.walkingDirection !== 'down') {
-            this.walkingDirection = 'down';
-            this.gotoAndPlay('down');
-        }
-        createjs.Tween.get(this)
-            .to({y: this.y + 16}, this.walkspeed)
-            .call(function() {
-                this.goNextAction();
-            });
-    }
+    // 次のアクションをキャンセルして
+    // 現時点のアクションで終了させる
     stopWalk() {
-        this.nextAction = null;
+        this.nextAction = {
+            action: null,
+            walkDisable: false
+        };
     }
 }
