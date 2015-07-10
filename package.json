@@ -1,0 +1,35 @@
+{
+  "name": "soket-io-demo",
+  "version": "1.0.0",
+  "description": "socket-ioを使ったデモ",
+  "main": "app.js",
+  "dependencies": {
+    "babel": "^5.6.14",
+    "babelify": "^6.1.2",
+    "browserify": "^10.2.4",
+    "jade": "^1.11.0",
+    "node-sass": "^3.2.0",
+    "socket.io": "^1.3.5",
+    "watchify": "^3.2.3"
+  },
+  "devDependencies": {
+    "watch": "^0.16.0"
+  },
+  "scripts": {
+    "jade": "jade src/index.jade --out public",
+    "sass": "node-sass src/sass/* --output public/css",
+    "watch:babel": "watchify -d src/app.js -t babelify -o public/bundle.js -v",
+    "watch:jade": "watch 'npm run jade' src/",
+    "watch:sass": "watch 'npm run sass' src/sass/",
+    "watch": "npm run watch:jade & npm run watch:sass & npm run watch:babel"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/canvas-ncu/soket-io-demo.git"
+  },
+  "author": "sawa-zen",
+  "bugs": {
+    "url": "https://github.com/canvas-ncu/soket-io-demo/issues"
+  },
+  "homepage": "sawa-zen.com"
+}
