@@ -34,6 +34,6 @@ export default class Map extends createjs.Container{
   }
   // 指定したマスが歩行可能か確認
   validateCell(x, y) {
-      return CFG.MAP_DATA[y][x] ? false : true;
+      return CFG.MAP_DATA[y][x] == 1 ? true : false;
   }
 }
