@@ -69,10 +69,10 @@ export default class Avatar extends createjs.Sprite{
     }
     // アバターの位置のゲッター
     getCellX() {
-        return this.cellX;
+        return 0 + this.cellX;
     }
     getCellY() {
-        return this.cellY;
+        return 0 + this.cellY;
     }
     // 次のアクションをセット
     walk(direction, walkDisable) {
@@ -119,6 +119,10 @@ export default class Avatar extends createjs.Sprite{
         // 次の立ち位置を計算
         var getNextPos = (_dir) => {
             var nowPos = [this.getCellX(), this.getCellY()];
+            // 今回移動が許可されていなければその場で足踏み
+            if(this.nextAction.walkDisable) {
+                return nowPos;
+            }
             switch(_dir) {
                 case 'up'   : return [nowPos[0],     nowPos[1] - 1];
                 case 'left' : return [nowPos[0] - 1, nowPos[1]    ];
@@ -128,6 +132,9 @@ export default class Avatar extends createjs.Sprite{
         };
         // 次の立ち位置座標を保持
         var nextPos = getNextPos(this.direction);
+        // 立ち位置座標の更新
+        this.cellX = nextPos[0];
+        this.cellY = nextPos[1];
         // 移動アニメーションを開始
         createjs.Tween.get(this)
             .to(
@@ -138,9 +145,6 @@ export default class Avatar extends createjs.Sprite{
                 this.walkspeed
             )
             .call(function() {
-                // 立ち位置座標の更新
-                this.cellX = nextPos[0];
-                this.cellY = nextPos[1];
                 // 終了したら再起的に次のアクションを実行
                 this.goNextAction();
             });
