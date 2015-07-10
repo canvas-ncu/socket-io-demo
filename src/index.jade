@@ -1,0 +1,16 @@
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    title socket-io-demo
+    meta(content="socket.ioとCreateJSのテスト", name="description")
+    meta(name="viewport", content="width=device-width")
+    // CSS
+    link(href="/css/normalize.css", rel="stylesheet")
+    link(href="/css/index.css", rel="stylesheet")
+    // JS
+    //script(src="/socket.io/socket.io.js")
+    script(src="https://code.createjs.com/createjs-2015.05.21.min.js")
+  body
+    canvas#my-canvas(width=160, height=160)
+    script(src="bundle.js")
