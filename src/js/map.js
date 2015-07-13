@@ -11,7 +11,7 @@ export default class Map extends createjs.Container{
     this.initialize();
     
     // マップのタイルのベース
-    var mapTileBase = new createjs.SpriteSheet({
+    var mapCellBase = new createjs.SpriteSheet({
         images: ['/img/map.png'],
         frames: {
             width:  CFG.TILE_SIZE,
@@ -22,7 +22,7 @@ export default class Map extends createjs.Container{
     // 15 * 15マスのマップ作成
     for(let y = 0; y < CFG.MAP_DATA.length; y++) {
         for(let x = 0; x < CFG.MAP_DATA[y].length; x++) {
-            var tile = new createjs.Sprite(mapTileBase);
+            var tile = new createjs.Sprite(mapCellBase);
             // 座標をセット
             tile.setTransform(Util.getX(x), Util.getY(y));
             // 木か床かどちらかのスプライトを表示
