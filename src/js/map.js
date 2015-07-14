@@ -9,7 +9,7 @@ export default class Map extends createjs.Container{
     _.extend(this, params);
     // createjsコンポーネントをイニシャライズ
     this.initialize();
-    
+
     // マップのタイルのベース
     var mapCellBase = new createjs.SpriteSheet({
         images: ['/img/map.png'],
@@ -34,6 +34,6 @@ export default class Map extends createjs.Container{
   }
   // 指定したマスが歩行可能か確認
   validateCell(x, y) {
-      return CFG.MAP_DATA[y][x] == 1 ? true : false;
+      return CFG.MAP_DATA[y][x] === 0 ? true : false;
   }
 }
