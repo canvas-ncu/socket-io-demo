@@ -64,7 +64,7 @@ class App {
         var avatar = new Avatar({
             cellX: 1,
             cellY: 1,
-            image: '/img/pokemonrgb_various_sheet.png'
+            image: '/img/avatars/boy.png'
         });
         // マップ上に追加
         this.map.addChild(avatar);
