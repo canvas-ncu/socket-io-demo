@@ -1,7 +1,7 @@
 import _ from 'underscore'
-import * as Util from './js/utility.js';
-import Map from './js/map.js';
-import Avatar from './js/avatar.js';
+import * as Util from './utility.js';
+import Map from './map.js';
+import Avatar from './avatar.js';
 
 class App {
     constructor(params) {
