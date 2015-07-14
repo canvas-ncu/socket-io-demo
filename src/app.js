@@ -7,6 +7,7 @@ class App {
     constructor(params) {
         // 自分アバターの仮ID
         var myId = 'asdfadfasdfa';
+        var FPS = 60;
         // 生成されたアバターリスト
         this.avatarList = {};
         // 入力されているキー
@@ -45,12 +46,15 @@ class App {
         createjs.Ticker.on("tick", () => {
             // stageの再描画
             this.stage.update();
-
-            var nextAction = myAvatar.getNextAction();
             // 動作が入力されていればアバターを動かす
-            if(myAvatar.getNextAction()) {
-                this.moveAvatar(myId, myAvatar.getNextAction());
+            var nextAction = myAvatar.getNextAction();
+            if(nextAction) {
+                this.moveAvatar(myId, nextAction);
                 return;
+            } else {
+                if(!myAvatar.isMoving) {
+                    myAvatar.stop();
+                }
             }
         });
     }
@@ -112,10 +116,6 @@ class App {
             .call(function() {
                 // 移動終了状態にフラグを戻す
                 target.isMoving = false;
-                // 次の動きが入力されていなければ足踏みを止める
-                if(!target.getNextAction()) {
-                    target.stop();
-                }
             });
     }
 }
