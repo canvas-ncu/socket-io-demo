@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import * as Util from './utility.js';
-import * as CFG from '../config.js';
+import * as CFG from './config.js';
 
 
 export default class Map extends createjs.Container{

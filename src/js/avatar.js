@@ -1,5 +1,5 @@
 import _ from 'underscore'
-import * as CFG from '../config.js';
+import * as CFG from './config.js';
 import * as Util from './utility.js';
 
 export default class Avatar extends createjs.Sprite{

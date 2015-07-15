@@ -1,7 +1,7 @@
 import _ from 'underscore'
-import * as Util from './js/utility.js';
-import Map from './js/map.js';
-import Avatar from './js/avatar.js';
+import * as Util from './utility.js';
+import Map from './map.js';
+import Avatar from './avatar.js';
 
 class App {
     constructor(params) {
@@ -64,7 +64,7 @@ class App {
         var avatar = new Avatar({
             cellX: 1,
             cellY: 1,
-            image: '/img/pokemonrgb_various_sheet.png'
+            image: '/img/avatars/boy.png'
         });
         // マップ上に追加
         this.map.addChild(avatar);
