@@ -1,23 +1,17 @@
 import _ from 'underscore'
-import * as CFG from '../config.js';
+import * as CFG from './config.js';
 import * as Util from './utility.js';
 
 export default class Avatar extends createjs.Sprite{
+
     constructor(params) {
         super(params);
         // どちらを向いているかのステータス
-        this.direction = params.direction || 'down';
-        // 歩いてるかどうかだけのフラグ
-        this.isWalking = false;
+        this._direction = params.direction || 'down';
         // どの方向に歩いてるかのフラグ
-        this.walkingDirection = null;
-        // 歩くスピード
-        this.walkspeed = 500;
-        // 次にどちらに行くか
-        this.nextAction = {
-            action: null,       // 次の動作
-            walkDisable: false  // 進めるかどうかのフラグ
-        };
+        this._walkingDirection = null;
+        // 次の動作
+        this._nextAction = null;
 
         // 歩くスピード
         var walkSpeed = 0.3;
@@ -55,106 +49,62 @@ export default class Avatar extends createjs.Sprite{
         // createJSコンポーネントをイニシャライズ
         this.initialize(spriteSheet);
         // 初期立ち位置をセット
-        this.setCellX(params.cellX || 1);
-        this.setCellY(params.cellY || 1);
+        this._cellX = params.cellX || 1;
+        this._cellY = params.cellY || 1;
+        this.x = Util.getX(this._cellX);
+        this.y = Util.getY(this._cellY);
     }
+
     // アバターの位置のセッター
     setCellX(x) {
-        this.cellX = x;
-        this.x = Util.getX(x);
+        this._cellX = x;
     }
     setCellY(y) {
-        this.cellY = y;
-        this.y = Util.getY(y);
+        this._cellY = y;
     }
+
     // アバターの位置のゲッター
     getCellX() {
-        return 0 + this.cellX;
+        return 0 + this._cellX;
     }
     getCellY() {
-        return 0 + this.cellY;
+        return 0 + this._cellY;
     }
+
     // 次のアクションをセット
-    walk(direction, walkDisable) {
-        if(!direction) {
-            console.error('require: direction');
-        }
-        // 次のアクションの予約
-        this.nextAction = {
-            action: direction,
-            walkDisable: walkDisable
-        };
-        // 現時点で歩いていなければ
-        // 歩き始める
-        if(!this.isWalking) {
-            this.isWalking = true;
-            this.goNextAction();
-        }
+    setNextAction(direction) {
+        this._nextAction = direction;
     }
-    // 予約されている動作を実行
-    goNextAction() {
-        // 次のアクションが入力されていなければ止める
-        if(!this.nextAction.action) {
-            this.isWalking = false;
-            this.walkingDirection = null;
-            switch(this.direction) {
-                case 'up'   : this.gotoAndStop(3); break;
-                case 'left' : this.gotoAndStop(6); break;
-                case 'right': this.gotoAndStop(8); break;
-                case 'down' : this.gotoAndStop(0); break;
-            }
-            return;
+    // 次のアクションをゲット
+    getNextAction() {
+        return this._nextAction;
+    }
+
+    // 足踏みをさせる
+    stamp(direction) {
+        // 向きを更新
+        this._direction = direction;
+        // 歩こうとしている向きにすでに歩いていなければ
+        // スプライトシートアニメーション開始
+        if(this._walkingDirection !== direction) {
+            this.gotoAndPlay(direction);
+            // 歩行中の向きを更新
+            this._walkingDirection = direction;
         }
 
-        // 向いている方向を更新
-        this.direction = this.nextAction.action;
-        // 今歩いている方向と次の動作が違った場合は
-        // 新規にスプライトアニメーションを始める
-        if(this.walkingDirection !== this.direction) {
-            // 歩いている方向を更新
-            this.walkingDirection = this.direction;
-            // スプライトアニメーションを開始
-            this.gotoAndPlay(this.direction);
+    }
+
+    // 足踏みを止める
+    stop() {
+        // 歩行終了にフラグを変更
+        this._walkingDirection = null;
+        // 向いている方向で足を止める
+        switch(this._direction) {
+            case 'up'   : this.gotoAndStop(3); break;
+            case 'left' : this.gotoAndStop(6); break;
+            case 'right': this.gotoAndStop(8); break;
+            case 'down' : this.gotoAndStop(0); break;
         }
-        // 次の立ち位置を計算
-        var getNextPos = (_dir) => {
-            var nowPos = [this.getCellX(), this.getCellY()];
-            // 今回移動が許可されていなければその場で足踏み
-            if(this.nextAction.walkDisable) {
-                return nowPos;
-            }
-            switch(_dir) {
-                case 'up'   : return [nowPos[0],     nowPos[1] - 1];
-                case 'left' : return [nowPos[0] - 1, nowPos[1]    ];
-                case 'right': return [nowPos[0] + 1, nowPos[1]    ];
-                case 'down' : return [nowPos[0],     nowPos[1] + 1];
-            }
-        };
-        // 次の立ち位置座標を保持
-        var nextPos = getNextPos(this.direction);
-        // 立ち位置座標の更新
-        this.cellX = nextPos[0];
-        this.cellY = nextPos[1];
-        // 移動アニメーションを開始
-        createjs.Tween.get(this)
-            .to(
-                {
-                    x: Util.getX(nextPos[0]),
-                    y: Util.getY(nextPos[1]),
-                },
-                this.walkspeed
-            )
-            .call(function() {
-                // 終了したら再起的に次のアクションを実行
-                this.goNextAction();
-            });
     }
-    // 次のアクションをキャンセルして
-    // 現時点のアクションで終了させる
-    stopWalk() {
-        this.nextAction = {
-            action: null,
-            walkDisable: false
-        };
-    }
+
 }

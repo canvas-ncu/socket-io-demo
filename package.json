@@ -9,19 +9,22 @@
     "browserify": "^10.2.4",
     "jade": "^1.11.0",
     "node-sass": "^3.2.0",
-    "socket.io": "^1.3.5",
-    "watchify": "^3.2.3"
+    "socket.io": "^1.3.5"
   },
   "devDependencies": {
-    "watch": "^0.16.0"
+    "watch": "^0.16.0",
+    "watchify": "^3.2.3"
   },
   "scripts": {
-    "jade": "jade src/index.jade --out public",
-    "sass": "node-sass src/sass/* --output public/css",
-    "watch:babel": "watchify -d src/app.js -t babelify -o public/bundle.js -v",
-    "watch:jade": "watch 'npm run jade' src/",
-    "watch:sass": "watch 'npm run sass' src/sass/",
-    "watch": "npm run watch:jade & npm run watch:sass & npm run watch:babel"
+    "start": "npm run build && npm run watch",
+    "build:js":   "browserify src/js/app.js -t babelify --outfile public/bundle.js",
+    "build:jade": "jade src/jade/index.jade --out public",
+    "build:sass": "node-sass src/sass/* --output public/css",
+    "build": "npm run build:jade && npm run build:sass && npm run build:js",
+    "watch:js":   "watch 'npm run build:js'   src/js/",
+    "watch:jade": "watch 'npm run build:jade' src/jade/",
+    "watch:sass": "watch 'npm run build:sass' src/sass/",
+    "watch": "npm run watch:jade & npm run watch:sass & npm run watch:js"
   },
   "repository": {
     "type": "git",
@@ -29,7 +32,7 @@
   },
   "author": "sawa-zen",
   "bugs": {
-    "url": "https://github.com/canvas-ncu/soket-io-demo/issues"
+    "url": "http://github.com/canvas-ncu/soket-io-demo/issues"
   },
-  "homepage": "sawa-zen.com"
+  "homepage": "http://sawa-zen.com"
 }
