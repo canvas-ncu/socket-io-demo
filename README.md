@@ -19,59 +19,57 @@ socket.ioのWebsocket通信と、createjsのcanvasによる描画で、
 ## Usage
 
 1. 必要な node モジュールのインストール
-```
-$ npm install
-```
+  ```
+  $ npm install
+  ```
 
 1. `npm run start` を叩いてファイルのwatchを開始
-```
-$ npm run start
-```
+  ```
+  $ npm run start
+  ```
 
 1. `public/index.html`にアクセスでき、nginx 経由で websocket 通信ができるように `nginx.conf` を設定
-```
-    /** 略 **/
+  ```
+      /** 略 **/
 
-    # canvas
-    upstream io_nodes {
-        ip_hash;
-        # 起動しているsocket.ioの接続先URL
-        server 127.0.0.1:1080;
-    }
-    server {
-        listen       80;
-        server_name  socket-io-demo.localhost;
+      # canvas
+      upstream io_nodes {
+          ip_hash;
+          # 起動しているsocket.ioの接続先URL
+          server 127.0.0.1:1080;
+      }
+      server {
+          listen       80;
+          server_name  socket-io-demo.localhost;
 
-        location / {
-            root   [プロジェクトのroot]/public;
-            index  index.html index.php;
-        }
+          location / {
+              root   [プロジェクトのroot]/public;
+              index  index.html index.php;
+          }
 
-        # Webブラウザからsocket.ioにアクセスする際のパス`/socket.io/`だった場合、socket.ioに転送(Proxy)
-        location /socket.io/ {
-            proxy_set_header Upgrade $http_upgrade;
-            proxy_set_header Connection "upgrade";
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header Host $host;
-            proxy_http_version 1.1;
-            proxy_pass http://io_nodes;
-        }
-    }
+          # Webブラウザからsocket.ioにアクセスする際のパス`/socket.io/`だった場合、socket.ioに転送(Proxy)
+          location /socket.io/ {
+              proxy_set_header Upgrade $http_upgrade;
+              proxy_set_header Connection "upgrade";
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+              proxy_set_header Host $host;
+              proxy_http_version 1.1;
+              proxy_pass http://io_nodes;
+          }
+      }
 
-    /** 略 **/
-```
+      /** 略 **/
+  ```
 
 1. `nginx.conf`の再読み込み
-```
-$ sudo nginx -s reload
-```
-
-1. `etc/hosts`に`socket-io-demo.localhost`を追加
+  ```
+  $ sudo nginx -s reload
+  ```
 
 1. ブラウザで確認
-```
-http://socket-io-demo.localhost
-```
+  ```
+  http://socket-io-demo.localhost
+  ```
 
 ## Install
 ```
