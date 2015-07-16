@@ -109,7 +109,7 @@ class App {
             .to(
                 {
                     x: Util.getX(target.getCellX()),
-                    y: Util.getY(target.getCellY())
+                    y: Util.getY(target.getCellY()) - 4
                 },
                 500
             )
