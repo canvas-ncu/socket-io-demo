@@ -52,7 +52,7 @@ export default class Avatar extends createjs.Sprite{
         this._cellX = params.cellX || 1;
         this._cellY = params.cellY || 1;
         this.x = Util.getX(this._cellX);
-        this.y = Util.getY(this._cellY);
+        this.y = Util.getY(this._cellY) - 4;
     }
 
     // アバターの位置のセッター
@@ -91,7 +91,6 @@ export default class Avatar extends createjs.Sprite{
             // 歩行中の向きを更新
             this._walkingDirection = direction;
         }
-
     }
 
     // 足踏みを止める
