@@ -2,7 +2,6 @@
   "name": "soket-io-demo",
   "version": "1.0.0",
   "description": "socket-ioを使ったデモ",
-  "main": "app.js",
   "dependencies": {
     "babel": "^5.6.14",
     "babelify": "^6.1.2",
@@ -19,14 +18,14 @@
   "scripts": {
     "start": "npm run build && npm run watch",
     "build:js": "browserify src/js/app.js -t babelify --outfile public/bundle.js",
-    "build:server": "browserify src/server/app.js -t babelify --outfile public/server.js",
+    "build:server": "babel src/server/app.js --out-file public/server.js",
     "build:jade": "jade src/jade/index.jade --out public",
     "build:sass": "node-sass src/sass/* --output public/css",
     "build": "npm run build:jade && npm run build:sass && npm run build:js && npm run build:server",
-    "watch:js": "watch 'npm run build:js'     src/js/",
+    "watch:js": "watch 'npm run build:js' src/js/",
     "watch:server": "watch 'npm run build:server' src/server/",
-    "watch:jade": "watch 'npm run build:jade'   src/jade/",
-    "watch:sass": "watch 'npm run build:sass'   src/sass/",
+    "watch:jade": "watch 'npm run build:jade' src/jade/",
+    "watch:sass": "watch 'npm run build:sass' src/sass/",
     "watch": "npm run watch:jade & npm run watch:sass & npm run watch:js & npm run watch:server"
   },
   "repository": {
