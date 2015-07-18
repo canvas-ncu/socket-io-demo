@@ -9,10 +9,16 @@ io.sockets.on('connection', (socket) => {
     // 誰かが接続した事を監視
     socket.on('beforeconnect', () => {
         userList.push(socket.id);
-        socket.broadcast.emit('connected', {
-            hash: socket.id
+        // 自分が接続完了したことを知らせる
+        socket.emit('connected', {
+            userId: socket.id,
+            userList: userList
         });
-        console.info(userList);
+        // 他人に接続したことを知らせる
+        socket.broadcast.emit('loginuser', {
+            userId: socket.id,
+            userList: userList
+        });
     });
 
     // 誰かが接続が切れた事を監視
@@ -21,10 +27,17 @@ io.sockets.on('connection', (socket) => {
         _.remove(userList, (_id) => {
             return socket.id === _id;
         });
-        socket.broadcast.emit('disconect', {
-            hash: socket.id
+        socket.broadcast.emit('logoutuser', {
+            userId: socket.id
         });
+    });
 
-        console.info(userList);
+    // 誰かが動いた事を監視
+    socket.on('move', (direction) => {
+        // 自分以外に動いたことを知らせる
+        socket.broadcast.emit('moveuser', {
+            userId: socket.id,
+            direction: direction
+        });
     });
 });

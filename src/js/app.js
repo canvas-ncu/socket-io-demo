@@ -1,4 +1,4 @@
-import _ from 'underscore'
+import _ from 'lodash'
 import * as Util from './utility.js';
 import Map from './map.js';
 import Avatar from './avatar.js';
@@ -6,10 +6,15 @@ import Avatar from './avatar.js';
 class App {
     constructor(params) {
         // 自分アバターの仮ID
-        var myId = 'asdfadfasdfa';
+        var myId = '';
+        var myAvatar = null;
         var FPS = 60;
+
+        // socket.ioの準備
+        var socket = io();
+
         // 生成されたアバターリスト
-        this.avatarList = {};
+        this.userList = {};
         // 入力されているキー
         this.inputingKey = null;
 
@@ -21,9 +26,30 @@ class App {
         this.map = new Map();
         this.stage.addChild(this.map);
 
-        // 自分のアバターを追加
-        this.addAvatar(myId);
-        var myAvatar = this.avatarList[myId];
+        // 初回ログイン
+        socket.on('connected', (e) => {
+            myId = e.userId;
+            _.each(e.userList, (_userId) => {
+                this.addAvatar(_userId);
+            });
+            myAvatar = this.userList[myId];
+        });
+
+        // 他人のアバターを追加
+        socket.on('loginuser', (e) => {
+            this.addAvatar(e.userId);
+        });
+
+        // 他人のアバターを追加
+        socket.on('logoutuser', (e) => {
+            var target = this.userList[e.userId];
+            this.map.removeChild(target);
+        });
+
+        // 他人のアバターが移動したことを監視
+        socket.on('moveuser', (e) => {
+            this.moveAvatar(this.userList[e.userId], e.direction);
+        });
 
         // キーボード入力を監視
         document.onkeydown = (e) => {
@@ -39,6 +65,9 @@ class App {
 
         // キーを離したら入力をキャンセル
         document.onkeyup = () => {
+            if(!myAvatar) {
+                return;
+            }
             myAvatar.setNextAction(null);
         }
 
@@ -46,17 +75,28 @@ class App {
         createjs.Ticker.on("tick", () => {
             // stageの再描画
             this.stage.update();
-            // 動作が入力されていればアバターを動かす
-            var nextAction = myAvatar.getNextAction();
-            if(nextAction) {
-                this.moveAvatar(myId, nextAction);
-                return;
-            } else {
-                if(!myAvatar.isMoving) {
-                    myAvatar.stop();
+
+            _.each(this.userList, (_avatar) => {
+                // 動作が入力されていればアバターを動かす
+                var nextAction = _avatar.getNextAction();
+                if(nextAction) {
+                    console.info(_avatar.userId);
+                    //if(_avatar.userId === myId) {
+                        socket.emit('move', nextAction);
+                    //}
+                    this.moveAvatar(_avatar, nextAction);
+                    return;
+                } else {
+                    if(!_avatar.isMoving) {
+                        _avatar.stop();
+                    }
                 }
-            }
+            });
         });
+
+        // 接続を伝える
+        socket.emit('beforeconnect');
+
     }
 
     // アバターの追加
@@ -69,13 +109,11 @@ class App {
         // マップ上に追加
         this.map.addChild(avatar);
         // アバターのリストに追加
-        this.avatarList[id] = avatar;
+        this.userList[id] = avatar;
     }
 
     // アバターを動かす
-    moveAvatar(id, direction) {
-        // 対象となるアバター
-        var target = this.avatarList[id];
+    moveAvatar(target, direction) {
 
         // 移動中であれば処理しない
         if(target.isMoving) {
