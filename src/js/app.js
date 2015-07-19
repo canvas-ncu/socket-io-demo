@@ -71,6 +71,31 @@ class App {
             myAvatar.setNextAction(null);
         }
 
+        var upButton =     document.getElementById('up'),
+            leftButton =   document.getElementById('left'),
+            rightButton =  document.getElementById('right'),
+            downButton = document.getElementById('down');
+        upButton.addEventListener('touchstart', () => {
+            myAvatar.setNextAction('up');
+        });
+        leftButton.addEventListener('touchstart', () => {
+            myAvatar.setNextAction('left');
+        });
+        rightButton.addEventListener('touchstart', () => {
+            myAvatar.setNextAction('right');
+        });
+        downButton.addEventListener('touchstart', () => {
+            myAvatar.setNextAction('down');
+        });
+        document.addEventListener('touchend', () => {
+            myAvatar.setNextAction(null);
+        });
+        document.addEventListener('touchmove', (e) => {
+          if (window.innerHeight >= document.body.scrollHeight) {
+            e.preventDefault();
+          }
+        }, false);
+
         // 1コマ毎にupdate
         createjs.Ticker.on("tick", () => {
             // stageの再描画
@@ -80,7 +105,6 @@ class App {
                 // 動作が入力されていればアバターを動かす
                 var nextAction = _avatar.getNextAction();
                 if(nextAction) {
-                    console.info(_avatar.userId);
                     //if(_avatar.userId === myId) {
                         socket.emit('move', nextAction);
                     //}
