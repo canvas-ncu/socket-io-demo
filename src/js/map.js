@@ -1,4 +1,4 @@
-import _ from 'underscore';
+import _ from 'lodash';
 import * as Util from './utility.js';
 import * as CFG from './config.js';
 
