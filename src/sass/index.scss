@@ -3,61 +3,96 @@ html,body{
     padding: 0;
     width: 100%;
     height: 100%;
+    overflow: hidden;
 }
 
-body{
-    position: relative;
-    background-color: #000;
-}
-
-#my-canvas{
-    position: absolute;
-    width:  300px;
-    height: 300px;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    margin: auto;
-    display: block;
-    background-color: #FFFFFF;
-}
-
-#member {
+#main {
   float: left;
-  width: 300px;
+  position: relative;
+  background-color: #000;
+  //width: 65%;
+  width: 100%;
   height: 100%;
-  color: #FFF;
-  background-color: #3F4B5B;
 
-  h1{
-    margin: 0;
-    padding: 0 0 0 20px;
-    font-size: 20px;
-    font-weight: normal;
-    line-height: 60px;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
-    border-bottom-color: #CCC;
-  }
-
-  #member_list {
-    overflow: auto;
-  }
-
-  ul {
-    padding: 0;
-    display: block;
-    list-style: none;
-
-    li{
-      height: 80px;
+  #my-canvas{
+      position: absolute;
+      width:  300px;
+      height: 300px;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      margin: auto;
       display: block;
-      border-bottom-style: solid;
-      border-bottom-width: 1px;
-      border-bottom-color: #999;
-    }
+      background-color: #FFFFFF;
+  }
 
+  @media screen and (min-width: 480px) {
+    #controller{
+      display: none;
+    }
+  }
+
+  #controller{
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    ul {
+      width: 280px;
+      margin: 0 auto;
+      padding: 0;
+      list-style: none;
+
+      li {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        margin: 0 10px 0 10px;
+        text-align: center;
+        line-height: 50px;
+        color: #FFF;
+        font-weight: bold;
+        background-color: #CCC;
+      }
+    }
   }
 
 }
+
+//#user-list {
+//  float: left;
+//  width: 35%;
+//  height: 100%;
+//  color: #FFF;
+//  background-color: #8E44AD;
+//
+//  h1{
+//    margin: 0;
+//    padding: 0 0 0 20px;
+//    font-size: 30px;
+//    font-weight: normal;
+//    line-height: 60px;
+//    font-family: 'Marck Script', cursive;
+//  }
+//
+//  ul {
+//    padding: 0;
+//    display: block;
+//    list-style: none;
+//
+//    li{
+//      height: 80px;
+//      display: block;
+//      border-bottom-style: solid;
+//      border-bottom-width: 1px;
+//      border-bottom-color: #999;
+//    }
+//
+//  }
+//
+//}
