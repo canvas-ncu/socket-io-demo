@@ -8,11 +8,12 @@ html
     // font
     link(href='http://fonts.googleapis.com/css?family=Marck+Script', rel='stylesheet', type='text/css')
     // CSS
-    link(src="//normalize-css.googlecode.com/svn/trunk/normalize.css", rel="stylesheet")
+    link(href="/components/normalize.css/normalize.css", rel="stylesheet")
     link(href="/css/index.css", rel="stylesheet")
     // JS
     script(src="/socket.io/socket.io.js")
-    script(src="https://code.createjs.com/createjs-2015.05.21.min.js")
+    script(src="/components/easeljs/lib/easeljs-0.8.1.combined.js")
+    script(src="/components/TweenJS/lib/tweenjs-0.6.1.combined.js")
   body
     article#main
       canvas#my-canvas(width=160, height=160)
@@ -22,13 +23,4 @@ html
           li#up ↑
           li#down ↓
           li#right →
-    //article#user-list
-      h1 Socket-io-demo
-      ul
-        li あああああ
-        li あああああ
-        li あああああ
-        li あああああ
-        li あああああ
-        li あああああ
     script(src="bundle.js")
