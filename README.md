@@ -25,6 +25,12 @@ socket.ioのWebsocket通信と、createjsのcanvasによる描画で、
   $ npm install
   ```
 
+1. 必要な bower モジュールをインストール
+
+  ```
+  $ bower install
+  ```
+
 1. `npm run start` を叩いてファイルのwatchを開始
   ```
   $ npm run start
