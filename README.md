@@ -65,7 +65,7 @@ socket.ioのWebsocket通信と、createjsのcanvasによる描画で、
   ```
   $ sudo nginx -s reload
   ```
-1. 別ベインでサーバ起動
+1. 別セッションでサーバ起動
 
    ```
    $ node public/server.js
