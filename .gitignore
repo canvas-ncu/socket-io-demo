@@ -1,6 +1,8 @@
 node_modules/
 npm-debug.log
 public/bundle.js
-public/css/index.css
+public/css/*
+public/components/*
 public/index.html
 public/server.js
+!.gitkeep

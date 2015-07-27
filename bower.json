@@ -1,0 +1,17 @@
+{
+  "name": "soket-io-demo",
+  "version": "1.0.0",
+  "homepage": "https://github.com/canvas-ncu/soket-io-demo",
+  "authors": [
+    "sawada <sawadasuiren@gmail.com>"
+  ],
+  "dependencies": {
+    "modernizr": "~2.8.3",
+    "jQuery": "~2.1.4",
+    "normalize.css": "~3.0.3",
+    "bootstrap": "~3.3.5",
+    "easeljs": "~0.8.1",
+    "TweenJS": "~0.6.1"
+  },
+  "license": "MIT"
+}
