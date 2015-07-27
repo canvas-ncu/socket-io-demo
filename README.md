@@ -14,6 +14,8 @@ socket.ioのWebsocket通信と、createjsのcanvasによる描画で、
 
 ## Requirement
 
+- npm
+- bower
 - nginx
 
 ## Usage
