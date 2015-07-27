@@ -2,7 +2,7 @@
 
 socket.ioとcreatejsを使ったデモ
 
-![socket-io-demo](public/img/readme.gif)
+![socket-io-demo](https://raw.githubusercontent.com/wiki/canvas-ncu/socket-io-demo/images/main.gif)
 
 [Demoページ](http://socket-io-demo.sawa-zen.com)
 
@@ -65,11 +65,6 @@ socket.ioのWebsocket通信と、createjsのcanvasによる描画で、
   ```
   $ sudo nginx -s reload
   ```
-1. 別ベインでサーバ起動
-
-   ```
-   $ node public/server.js
-   ```
 
 1. ブラウザで確認
   ```
