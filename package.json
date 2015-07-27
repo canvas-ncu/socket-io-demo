@@ -16,6 +16,7 @@
     "watchify": "^3.2.3"
   },
   "scripts": {
+    "init": "npm install && bower install",
     "start": "npm run build && npm run watch",
     "build:js": "browserify src/js/app.js -t babelify --outfile public/bundle.js",
     "build:server": "babel src/server/app.js --out-file public/server.js",
