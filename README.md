@@ -2,7 +2,7 @@
 
 socket.ioとcreatejsを使ったデモ
 
-![socket-io-demo](https://raw.githubusercontent.com/wiki/canvas-ncu/socket-io-demo/images/main.gif)
+![socket-io-demo](public/img/readme.gif)
 
 [Demoページ](http://socket-io-demo.sawa-zen.com)
 
