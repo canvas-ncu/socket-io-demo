@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "watch": "^0.16.0",
-    "watchify": "^3.2.3"
+    "watchify": "^3.9.0"
   },
   "scripts": {
     "start": "npm run build && npm run watch",
